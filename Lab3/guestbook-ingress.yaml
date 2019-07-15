@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.bluemix.net/proxy-read-timeout: serviceName=echoserver-service timeout=300s
+  name: echoserver-via-ingress
+  namespace: default
+spec:
+  rules:
+  - host: remkohdev-cluster-ws-1.us-south.containers.appdomain.cloud # Change it to your cluster's ALB host name
+    http:
+      paths:
+      - backend:
+          serviceName: echoserver-service
+          servicePort: 80
+        path: /
+  tls:
+  - hosts:
+    - remkohdev-cluster-ws-1.us-south.containers.appdomain.cloud # Change it to your cluster's ALB host name
+    secretName: remkohdev-cluster-ws-1 # Change it to your cluster's secret (it is in default namespace)
